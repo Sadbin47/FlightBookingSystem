@@ -5,5 +5,5 @@ import { BookingStatus } from '../../common/enums/booking-status.enum';
 export class UpdateBookingStatusDto {
   @ApiProperty({ enum: BookingStatus })
   @IsEnum(BookingStatus)
-  status: BookingStatus;
+  status!: BookingStatus;
 }

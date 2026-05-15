@@ -8,12 +8,12 @@ export class CreateBookingDto {
   @Type(() => Number)
   @IsInt()
   @IsPositive()
-  flightId: number;
+  flightId!: number;
 
   @ApiProperty({ type: [PassengerDto] })
   @IsArray()
   @ArrayMinSize(1)
   @ValidateNested({ each: true })
   @Type(() => PassengerDto)
-  passengers: PassengerDto[];
+  passengers!: PassengerDto[];
 }

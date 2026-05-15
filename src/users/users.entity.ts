@@ -13,26 +13,26 @@ import {
 @Entity('users')
 export class User {
   @PrimaryGeneratedColumn()
-  id: number;
+  id!: number;
 
   @Column({ unique: true })
-  email: string;
+  email!: string;
 
   @Column({ select: false })
-  password: string;
+  password!: string;
 
   @Column()
-  fullName: string;
+  fullName!: string;
 
   @Column({ type: 'enum', enum: UserRole })
-  role: UserRole;
+  role!: UserRole;
 
   @CreateDateColumn()
-  createdAt: Date;
+  createdAt!: Date;
 
   @OneToMany(() => Booking, (booking) => booking.user)
-  bookings: Booking[];
+  bookings!: Booking[];
 
   @OneToOne(() => Employee, (employee) => employee.user)
-  employeeProfile: Employee;
+  employeeProfile!: Employee;
 }

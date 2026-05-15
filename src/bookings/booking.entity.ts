@@ -15,25 +15,25 @@ import { Passenger } from './passenger.entity';
 @Entity('bookings')
 export class Booking {
   @PrimaryGeneratedColumn()
-  id: number;
+  id!: number;
 
   @ManyToOne(() => User, (user) => user.bookings, { eager: true, onDelete: 'CASCADE' })
   @JoinColumn({ name: 'userId' })
-  user: User;
+  user!: User;
 
   @ManyToOne(() => Flight, (flight) => flight.bookings, { eager: true, onDelete: 'RESTRICT' })
   @JoinColumn({ name: 'flightId' })
-  flight: Flight;
+  flight!: Flight;
 
   @OneToMany(() => Passenger, (passenger) => passenger.booking, { cascade: true, eager: true })
-  passengers: Passenger[];
+  passengers!: Passenger[];
 
   @Column({ type: 'int' })
-  totalPassengers: number;
+  totalPassengers!: number;
 
   @Column({ type: 'enum', enum: BookingStatus, default: BookingStatus.CONFIRMED })
-  status: BookingStatus;
+  status!: BookingStatus;
 
   @CreateDateColumn()
-  bookingDate: Date;
+  bookingDate!: Date;
 }

@@ -14,33 +14,33 @@ import {
 @Entity('flights')
 export class Flight {
   @PrimaryGeneratedColumn()
-  id: number;
+  id!: number;
 
   @Column({ unique: true })
-  flightNumber: string;
+  flightNumber!: string;
 
   @Column()
-  origin: string;
+  origin!: string;
 
   @Column()
-  destination: string;
+  destination!: string;
 
   @Column({ type: 'timestamptz' })
-  departureTime: Date;
+  departureTime!: Date;
 
   @Column({ type: 'timestamptz' })
-  arrivalTime: Date;
+  arrivalTime!: Date;
 
   @Column({ type: 'decimal', precision: 12, scale: 2 })
-  price: number;
+  price!: number;
 
   @ManyToOne(() => Aircraft, (aircraft) => aircraft.flights, { eager: true, onDelete: 'RESTRICT' })
   @JoinColumn({ name: 'aircraftId' })
-  aircraft: Aircraft;
+  aircraft!: Aircraft;
 
   @OneToMany(() => Booking, (booking) => booking.flight)
-  bookings: Booking[];
+  bookings!: Booking[];
 
   @ManyToMany(() => Employee, (employee) => employee.assignedFlights)
-  assignedEmployees: Employee[];
+  assignedEmployees!: Employee[];
 }

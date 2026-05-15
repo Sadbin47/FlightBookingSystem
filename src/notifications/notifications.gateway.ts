@@ -4,7 +4,7 @@ import { Server, Socket } from 'socket.io';
 @WebSocketGateway({ cors: { origin: '*' } })
 export class NotificationsGateway implements OnGatewayConnection {
   @WebSocketServer()
-  server: Server;
+  server!: Server;
 
   handleConnection(_client: Socket) {}
 

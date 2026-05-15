@@ -5,33 +5,33 @@ import { IsDateString, IsInt, IsNumber, IsPositive, IsString } from 'class-valid
 export class CreateFlightDto {
   @ApiProperty()
   @IsString()
-  flightNumber: string;
+  flightNumber!: string;
 
   @ApiProperty()
   @IsString()
-  origin: string;
+  origin!: string;
 
   @ApiProperty()
   @IsString()
-  destination: string;
+  destination!: string;
 
   @ApiProperty()
   @IsDateString()
-  departureTime: string;
+  departureTime!: string;
 
   @ApiProperty()
   @IsDateString()
-  arrivalTime: string;
+  arrivalTime!: string;
 
   @ApiProperty()
   @Type(() => Number)
   @IsNumber()
   @IsPositive()
-  price: number;
+  price!: number;
 
   @ApiProperty()
   @Type(() => Number)
   @IsInt()
   @IsPositive()
-  aircraftId: number;
+  aircraftId!: number;
 }

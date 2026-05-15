@@ -4,17 +4,17 @@ import { Column, Entity, OneToMany, PrimaryGeneratedColumn } from 'typeorm';
 @Entity('aircraft')
 export class Aircraft {
   @PrimaryGeneratedColumn()
-  id: number;
+  id!: number;
 
   @Column()
-  model: string;
+  model!: string;
 
   @Column({ type: 'int' })
-  capacity: number;
+  capacity!: number;
 
   @Column()
-  manufacturer: string;
+  manufacturer!: string;
 
   @OneToMany(() => Flight, (flight) => flight.aircraft)
-  flights: Flight[];
+  flights!: Flight[];
 }

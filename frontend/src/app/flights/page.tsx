@@ -4,6 +4,7 @@ import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { api } from '@/lib/api';
 import { parseApiError } from '@/lib/utils';
+import { normalizeArray } from '@/lib/normalize';
 import { Flight } from '@/types/flight';
 import { FlightCard } from '@/components/flights/FlightCard';
 import { FlightFilters, FlightSearchForm } from '@/components/flights/FlightSearchForm';
@@ -20,7 +21,9 @@ export default function PublicFlightsPage() {
     try {
       setError('');
       const { data } = await api.get('/flights', { params: filters });
-      setFlights(data);
+      const rows = normalizeArray<Flight>(data);
+      setFlights(rows);
+      if (rows.length === 0 && !Array.isArray(data)) setError('Unexpected response from server');
     } catch (e) {
       setError(parseApiError(e));
     }

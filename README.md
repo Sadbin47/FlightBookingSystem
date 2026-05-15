@@ -35,7 +35,7 @@ npm install
 npm run dev
 ```
 4. Frontend URL:
-- `http://localhost:3001` or `http://localhost:3000` (based on your local Next.js port)
+- `http://localhost:3001`
 
 ## Default Test Users
 - Admin: `admin@flight.com` / `Admin@123`

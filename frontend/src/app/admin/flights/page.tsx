@@ -5,6 +5,7 @@ import { api } from '@/lib/api';
 import { Flight } from '@/types/flight';
 import { Aircraft } from '@/types/aircraft';
 import { parseApiError } from '@/lib/utils';
+import { normalizeArray } from '@/lib/normalize';
 import { ErrorMessage } from '@/components/ui/ErrorMessage';
 import { Button } from '@/components/ui/Button';
 import { Input } from '@/components/ui/Input';
@@ -37,9 +38,19 @@ export default function AdminFlightsPage() {
   const [error, setError] = useState('');
 
   async function fetchData() {
-    const [flightsRes, aircraftRes] = await Promise.all([api.get('/flights'), api.get('/admin/aircraft')]);
-    setFlights(flightsRes.data);
-    setAircraft(aircraftRes.data);
+    try {
+      setError('');
+      const [flightsRes, aircraftRes] = await Promise.all([api.get('/flights'), api.get('/admin/aircraft')]);
+      const flightRows = normalizeArray<Flight>(flightsRes.data);
+      const aircraftRows = normalizeArray<Aircraft>(aircraftRes.data);
+      setFlights(flightRows);
+      setAircraft(aircraftRows);
+      if (!Array.isArray(flightsRes.data) || !Array.isArray(aircraftRes.data)) setError('Unexpected response from server');
+    } catch (e) {
+      setError(parseApiError(e));
+      setFlights([]);
+      setAircraft([]);
+    }
   }
 
   useEffect(() => {

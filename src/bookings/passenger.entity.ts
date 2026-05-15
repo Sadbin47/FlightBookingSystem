@@ -4,18 +4,18 @@ import { Booking } from './booking.entity';
 @Entity('passengers')
 export class Passenger {
   @PrimaryGeneratedColumn()
-  id: number;
+  id!: number;
 
   @ManyToOne(() => Booking, (booking) => booking.passengers, { onDelete: 'CASCADE' })
   @JoinColumn({ name: 'bookingId' })
-  booking: Booking;
+  booking!: Booking;
 
   @Column()
-  name: string;
+  name!: string;
 
   @Column({ type: 'int' })
-  age: number;
+  age!: number;
 
   @Column()
-  passportNumber: string;
+  passportNumber!: string;
 }

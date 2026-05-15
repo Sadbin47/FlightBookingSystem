@@ -5,16 +5,16 @@ import { Column, Entity, JoinColumn, JoinTable, ManyToMany, OneToOne, PrimaryGen
 @Entity('employees')
 export class Employee {
   @PrimaryGeneratedColumn()
-  id: number;
+  id!: number;
 
   @OneToOne(() => User, { eager: true, onDelete: 'CASCADE' })
   @JoinColumn()
-  user: User;
+  user!: User;
 
   @Column()
-  roleType: string;
+  roleType!: string;
 
   @ManyToMany(() => Flight, (flight) => flight.assignedEmployees)
   @JoinTable({ name: 'employee_flights' })
-  assignedFlights: Flight[];
+  assignedFlights!: Flight[];
 }

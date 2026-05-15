@@ -30,6 +30,8 @@ NEXT_PUBLIC_API_BASE_URL=http://localhost:3000
 npm run dev
 ```
 
+Frontend uses port 3001 by default (see `frontend/package.json`).
+
 ## Backend Note
 Backend must be running first at `http://localhost:3000`.
 

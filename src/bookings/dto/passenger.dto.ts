@@ -5,15 +5,15 @@ export class PassengerDto {
   @ApiProperty()
   @IsString()
   @IsNotEmpty()
-  name: string;
+  name!: string;
 
   @ApiProperty()
   @IsInt()
   @IsPositive()
-  age: number;
+  age!: number;
 
   @ApiProperty()
   @IsString()
   @IsNotEmpty()
-  passportNumber: string;
+  passportNumber!: string;
 }

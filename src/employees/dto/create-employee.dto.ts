@@ -7,11 +7,11 @@ export class CreateEmployeeDto {
   @Type(() => Number)
   @IsInt()
   @IsPositive()
-  userId: number;
+  userId!: number;
 
   @ApiProperty()
   @IsString()
-  roleType: string;
+  roleType!: string;
 
   @ApiPropertyOptional({ type: [Number] })
   @IsOptional()

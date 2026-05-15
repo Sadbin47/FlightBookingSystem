@@ -5,18 +5,18 @@ import { UserRole } from '../../common/enums/user-role.enum';
 export class RegisterDto {
   @ApiProperty()
   @IsEmail()
-  email: string;
+  email!: string;
 
   @ApiProperty()
   @IsString()
   @MinLength(6)
-  password: string;
+  password!: string;
 
   @ApiProperty()
   @IsString()
-  fullName: string;
+  fullName!: string;
 
   @ApiProperty({ enum: UserRole })
   @IsEnum(UserRole)
-  role: UserRole;
+  role!: UserRole;
 }

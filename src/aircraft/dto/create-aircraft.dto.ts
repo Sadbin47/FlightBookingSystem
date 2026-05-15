@@ -4,14 +4,14 @@ import { IsInt, IsPositive, IsString } from 'class-validator';
 export class CreateAircraftDto {
   @ApiProperty()
   @IsString()
-  model: string;
+  model!: string;
 
   @ApiProperty()
   @IsInt()
   @IsPositive()
-  capacity: number;
+  capacity!: number;
 
   @ApiProperty()
   @IsString()
-  manufacturer: string;
+  manufacturer!: string;
 }
