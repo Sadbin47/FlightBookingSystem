@@ -60,6 +60,12 @@ export class FlightsService {
     return flight;
   }
 
+  async getCrew(flightId: number) {
+    const flight = await this.flightRepo.findOne({ where: { id: flightId }, relations: ['assignedEmployees', 'assignedEmployees.user'] });
+    if (!flight) throw new NotFoundException('Flight not found');
+    return flight.assignedEmployees ?? [];
+  }
+
   async update(id: number, dto: UpdateFlightDto): Promise<Flight> {
     const flight = await this.findOne(id);
     const oldTimes = { departureTime: flight.departureTime, arrivalTime: flight.arrivalTime };

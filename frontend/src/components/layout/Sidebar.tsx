@@ -8,6 +8,7 @@ const roleMenus: Record<UserRole, { label: string; href: string }[]> = {
     { label: 'Dashboard', href: '/customer/dashboard' },
     { label: 'Flights', href: '/customer/flights' },
     { label: 'My Bookings', href: '/customer/bookings' },
+    { label: 'Profile', href: '/customer/profile' },
   ],
   employee: [
     { label: 'Dashboard', href: '/employee/dashboard' },

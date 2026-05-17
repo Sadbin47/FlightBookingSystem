@@ -1,6 +1,7 @@
 'use client';
 
 import { useEffect, useState } from 'react';
+import Link from 'next/link';
 import { api } from '@/lib/api';
 import { Flight } from '@/types/flight';
 import { Aircraft } from '@/types/aircraft';
@@ -73,6 +74,7 @@ export default function AdminFlightsPage() {
   async function removeFlight(id: number) {
     if (!confirm('Delete this flight?')) return;
     try {
+      setError('');
       await api.delete(`/admin/flights/${id}`);
       await fetchData();
     } catch (e) {
@@ -129,6 +131,9 @@ export default function AdminFlightsPage() {
                       aircraftId: f.aircraft?.id ?? 1,
                     });
                   }}>Edit</Button>
+                  <Link className="inline-flex items-center rounded bg-slate-900 px-3 py-2 text-sm font-medium text-white hover:bg-slate-800" href={`/admin/flights/${f.id}/crew`}>
+                    Crew
+                  </Link>
                   <Button type="button" className="bg-red-600" onClick={() => void removeFlight(f.id)}>Delete</Button>
                 </td>
               </tr>

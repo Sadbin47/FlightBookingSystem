@@ -7,6 +7,7 @@ import { ErrorMessage } from '@/components/ui/ErrorMessage';
 import { parseApiError } from '@/lib/utils';
 import { Button } from '@/components/ui/Button';
 import { Input } from '@/components/ui/Input';
+import { normalizeArray } from '@/lib/normalize';
 
 interface FormData {
   model: string;
@@ -23,8 +24,14 @@ export default function AdminAircraftPage() {
   const [error, setError] = useState('');
 
   async function fetchData() {
-    const { data } = await api.get('/admin/aircraft');
-    setAircraft(data);
+    try {
+      setError('');
+      const { data } = await api.get('/admin/aircraft');
+      setAircraft(normalizeArray<Aircraft>(data));
+    } catch (e) {
+      setError(parseApiError(e));
+      setAircraft([]);
+    }
   }
 
   useEffect(() => {
@@ -33,6 +40,7 @@ export default function AdminAircraftPage() {
 
   async function save() {
     try {
+      setError('');
       if (editingId) await api.put(`/admin/aircraft/${editingId}`, form);
       else await api.post('/admin/aircraft', form);
       setForm(initial);

@@ -8,9 +8,11 @@ import {
   JoinColumn,
   ManyToOne,
   OneToMany,
+  OneToOne,
   PrimaryGeneratedColumn,
 } from 'typeorm';
 import { Passenger } from './passenger.entity';
+import { Payment } from './payment.entity';
 
 @Entity('bookings')
 export class Booking {
@@ -27,6 +29,9 @@ export class Booking {
 
   @OneToMany(() => Passenger, (passenger) => passenger.booking, { cascade: true, eager: true })
   passengers!: Passenger[];
+
+  @OneToOne(() => Payment, (payment) => payment.booking, { cascade: true, eager: true, nullable: true })
+  payment?: Payment;
 
   @Column({ type: 'int' })
   totalPassengers!: number;

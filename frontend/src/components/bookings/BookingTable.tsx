@@ -31,9 +31,9 @@ export function BookingTable({
             <tr key={booking.id} className="border-t">
               <td className="p-2">{booking.id}</td>
               <td className="p-2">{booking.user?.fullName}</td>
-              <td className="p-2">{booking.flight.flightNumber}</td>
+              <td className="p-2">{booking.flight?.flightNumber ?? '-'}</td>
               <td className="p-2">
-                {booking.flight.origin} → {booking.flight.destination}
+                {booking.flight?.origin ?? '-'} → {booking.flight?.destination ?? '-'}
               </td>
               <td className="p-2">{booking.totalPassengers}</td>
               <td className="p-2">{booking.status}</td>

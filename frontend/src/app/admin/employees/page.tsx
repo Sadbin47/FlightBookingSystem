@@ -7,6 +7,7 @@ import { ErrorMessage } from '@/components/ui/ErrorMessage';
 import { parseApiError } from '@/lib/utils';
 import { Button } from '@/components/ui/Button';
 import { Input } from '@/components/ui/Input';
+import { normalizeArray } from '@/lib/normalize';
 
 interface FormData {
   userId: number;
@@ -23,8 +24,14 @@ export default function AdminEmployeesPage() {
   const [error, setError] = useState('');
 
   async function fetchData() {
-    const { data } = await api.get('/admin/employees');
-    setEmployees(data);
+    try {
+      setError('');
+      const { data } = await api.get('/admin/employees');
+      setEmployees(normalizeArray<Employee>(data));
+    } catch (e) {
+      setError(parseApiError(e));
+      setEmployees([]);
+    }
   }
 
   useEffect(() => {
@@ -41,6 +48,7 @@ export default function AdminEmployeesPage() {
 
   async function save() {
     try {
+      setError('');
       const payload = {
         userId: Number(form.userId),
         roleType: form.roleType,
@@ -86,7 +94,7 @@ export default function AdminEmployeesPage() {
                   {e.user.fullName} ({e.user.id})
                 </td>
                 <td className="p-2">{e.roleType}</td>
-                <td className="p-2">{e.assignedFlights?.map((f) => f.id).join(', ') || '-'}</td>
+                <td className="p-2">{normalizeArray<{ id: number }>(e.assignedFlights).map((f) => f.id).join(', ') || '-'}</td>
                 <td className="p-2">
                   <Button
                     type="button"
@@ -95,7 +103,7 @@ export default function AdminEmployeesPage() {
                       setForm({
                         userId: e.user.id,
                         roleType: e.roleType,
-                        assignedFlightIds: e.assignedFlights?.map((f) => f.id).join(',') || '',
+                        assignedFlightIds: normalizeArray<{ id: number }>(e.assignedFlights).map((f) => f.id).join(',') || '',
                       });
                     }}
                   >

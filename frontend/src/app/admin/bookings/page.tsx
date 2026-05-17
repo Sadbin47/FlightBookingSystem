@@ -6,6 +6,7 @@ import { api } from '@/lib/api';
 import { BookingTable } from '@/components/bookings/BookingTable';
 import { parseApiError } from '@/lib/utils';
 import { ErrorMessage } from '@/components/ui/ErrorMessage';
+import { normalizeArray } from '@/lib/normalize';
 
 export default function AdminBookingsPage() {
   const [bookings, setBookings] = useState<Booking[]>([]);
@@ -13,10 +14,12 @@ export default function AdminBookingsPage() {
 
   async function fetchData() {
     try {
+      setError('');
       const { data } = await api.get('/employee/bookings');
-      setBookings(data);
+      setBookings(normalizeArray<Booking>(data));
     } catch (e) {
       setError(parseApiError(e));
+      setBookings([]);
     }
   }
 

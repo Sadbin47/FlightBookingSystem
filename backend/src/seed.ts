@@ -7,11 +7,13 @@ import { Aircraft } from './aircraft/aircraft.entity';
 import { Flight } from './flights/flight.entity';
 import { UserRole } from './common/enums/user-role.enum';
 import { User } from './users/users.entity';
+import { Employee } from './employees/employee.entity';
 
 async function seed() {
   const app = await NestFactory.createApplicationContext(AppModule);
   const dataSource = app.get(DataSource);
   const userRepo = dataSource.getRepository(User);
+  const employeeRepo = dataSource.getRepository(Employee);
   const aircraftRepo = dataSource.getRepository(Aircraft);
   const flightRepo = dataSource.getRepository(Flight);
 
@@ -30,6 +32,15 @@ async function seed() {
           password: await bcrypt.hash(u.password, 10),
         }),
       );
+    }
+  }
+
+  // Ensure employee profile exists for default employee user.
+  const employeeUser = await userRepo.findOne({ where: { email: 'employee@flight.com' } });
+  if (employeeUser) {
+    const existsEmployee = await employeeRepo.findOne({ where: { user: { id: employeeUser.id } } });
+    if (!existsEmployee) {
+      await employeeRepo.save(employeeRepo.create({ user: employeeUser, roleType: 'staff', assignedFlights: [] }));
     }
   }
 

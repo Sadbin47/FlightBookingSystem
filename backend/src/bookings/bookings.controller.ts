@@ -5,6 +5,7 @@ import { UserRole } from '../common/enums/user-role.enum';
 import { JwtAuthGuard } from '../common/guards/jwt-auth.guard';
 import { RolesGuard } from '../common/guards/roles.guard';
 import { CreateBookingDto } from './dto/create-booking.dto';
+import { CreatePaymentDto } from './dto/create-payment.dto';
 import { UpdateBookingStatusDto } from './dto/update-booking-status.dto';
 import { BookingsService } from './bookings.service';
 
@@ -47,5 +48,12 @@ export class BookingsController {
   @Get('bookings/:id')
   getBookingById(@Req() req: any, @Param('id', ParseIntPipe) id: number) {
     return this.bookingsService.getBookingById(req.user as never, id);
+  }
+
+  @Post('bookings/:id/payment')
+  @Roles(UserRole.CUSTOMER, UserRole.EMPLOYEE, UserRole.ADMIN)
+  @ApiOperation({ summary: 'Add/update payment for a booking' })
+  addPayment(@Req() req: any, @Param('id', ParseIntPipe) id: number, @Body() dto: CreatePaymentDto) {
+    return this.bookingsService.addPayment(req.user as never, id, dto);
   }
 }

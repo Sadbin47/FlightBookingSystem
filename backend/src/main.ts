@@ -9,6 +9,15 @@ async function bootstrap() {
   const app = await NestFactory.create(AppModule);
   const configService = app.get(ConfigService);
 
+  // Frontend runs on different origin/port (ex: http://localhost:3001).
+  // Allow browser to call API.
+  app.enableCors({
+    origin: true,
+    credentials: true,
+    allowedHeaders: ['content-type', 'authorization'],
+    methods: ['GET', 'HEAD', 'PUT', 'PATCH', 'POST', 'DELETE', 'OPTIONS'],
+  });
+
   app.useGlobalPipes(
     new ValidationPipe({
       whitelist: true,

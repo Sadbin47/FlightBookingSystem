@@ -13,14 +13,17 @@ import { NotificationsGateway } from '../notifications/notifications.gateway';
 import { User } from '../users/users.entity';
 import { Booking } from './booking.entity';
 import { CreateBookingDto } from './dto/create-booking.dto';
+import { CreatePaymentDto } from './dto/create-payment.dto';
 import { UpdateBookingStatusDto } from './dto/update-booking-status.dto';
 import { Passenger } from './passenger.entity';
+import { Payment } from './payment.entity';
 
 @Injectable()
 export class BookingsService {
   constructor(
     @InjectRepository(Booking) private readonly bookingRepo: Repository<Booking>,
     @InjectRepository(Passenger) private readonly passengerRepo: Repository<Passenger>,
+    @InjectRepository(Payment) private readonly paymentRepo: Repository<Payment>,
     @InjectRepository(Flight) private readonly flightRepo: Repository<Flight>,
     private readonly dataSource: DataSource,
     private readonly mailService: MailService,
@@ -128,5 +131,28 @@ export class BookingsService {
       status: booking.status,
     });
     return updated;
+  }
+
+  async addPayment(requester: { id: number; role: UserRole }, bookingId: number, dto: CreatePaymentDto) {
+    const booking = await this.bookingRepo.findOne({
+      where: { id: bookingId },
+      relations: ['user', 'flight', 'payment'],
+    });
+    if (!booking) throw new NotFoundException('Booking not found');
+
+    // Customer can only pay own booking; staff can pay any.
+    if (requester.role === UserRole.CUSTOMER && booking.user.id !== requester.id) {
+      throw new ForbiddenException('You can only pay for your own booking');
+    }
+
+    if (booking.payment) {
+      // Replace existing payment with latest details.
+      booking.payment.amount = dto.amount;
+      booking.payment.method = dto.method;
+      await this.paymentRepo.save(booking.payment);
+    } else {
+      booking.payment = await this.paymentRepo.save(this.paymentRepo.create({ booking, amount: dto.amount, method: dto.method }));
+    }
+    return this.bookingRepo.findOneOrFail({ where: { id: bookingId }, relations: ['user', 'flight', 'flight.aircraft', 'passengers', 'payment'] });
   }
 }

@@ -8,6 +8,12 @@ export interface Passenger {
   passportNumber: string;
 }
 
+export interface Payment {
+  id: number;
+  amount: number;
+  method: string;
+}
+
 export type BookingStatus = 'pending' | 'confirmed' | 'cancelled';
 
 export interface Booking {
@@ -18,4 +24,5 @@ export interface Booking {
   totalPassengers: number;
   status: BookingStatus;
   bookingDate: string;
+  payment?: Payment;
 }

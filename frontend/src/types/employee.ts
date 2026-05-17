@@ -5,5 +5,5 @@ export interface Employee {
   id: number;
   user: User;
   roleType: string;
-  assignedFlights: Flight[];
+  assignedFlights?: Flight[];
 }

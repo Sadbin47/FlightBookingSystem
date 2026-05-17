@@ -26,6 +26,7 @@ export default function PublicFlightsPage() {
       if (rows.length === 0 && !Array.isArray(data)) setError('Unexpected response from server');
     } catch (e) {
       setError(parseApiError(e));
+      setFlights([]);
     }
   }
 

@@ -57,4 +57,25 @@ export class EmployeesService {
     }
     return this.employeeRepo.save(employee);
   }
+
+  async assignEmployeeToFlight(flightId: number, employeeId: number) {
+    const employee = await this.findOne(employeeId);
+    const flight = await this.flightRepo.findOne({ where: { id: flightId }, relations: ['assignedEmployees'] });
+    if (!flight) throw new NotFoundException('Flight not found');
+
+    const exists = (flight.assignedEmployees ?? []).some((e) => e.id === employee.id);
+    if (!exists) {
+      flight.assignedEmployees = [...(flight.assignedEmployees ?? []), employee];
+      await this.flightRepo.save(flight);
+    }
+    return this.findOne(employeeId);
+  }
+
+  async removeEmployeeFromFlight(flightId: number, employeeId: number) {
+    const flight = await this.flightRepo.findOne({ where: { id: flightId }, relations: ['assignedEmployees'] });
+    if (!flight) throw new NotFoundException('Flight not found');
+    flight.assignedEmployees = (flight.assignedEmployees ?? []).filter((e) => e.id !== employeeId);
+    await this.flightRepo.save(flight);
+    return { message: 'Removed from crew' };
+  }
 }
